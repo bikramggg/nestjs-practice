@@ -7,6 +7,8 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
+  
+
   @Prop({ required: true, minlength: 3 })
   name: string;
 
@@ -23,7 +25,7 @@ export class User {
   @Prop({
     required: true,
     minlength: 4,
-    maxlength: 20,
+    maxlength: 1000,
     validate: {
       validator: (value: string) =>
         /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(value),

@@ -28,7 +28,7 @@ export class UsersController {
     status: 201,
     description: 'The user has been created.',
   })
-  @Post('/signup')
+  @Post('/c')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -40,7 +40,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
