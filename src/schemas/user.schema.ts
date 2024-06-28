@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import * as mongooseUniqueValidator from 'mongoose-unique-validator';
 import * as validator from 'validator';
 
@@ -8,7 +8,8 @@ export type UserDocument = HydratedDocument<User>;
 @Schema()
 export class User {
   
-
+  @Prop({type: mongoose.Schema.Types.ObjectId, auto: true})
+  _id: string;
   @Prop({ required: true, minlength: 3 })
   name: string;
 
