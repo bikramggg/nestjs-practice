@@ -1,16 +1,19 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
-  Patch,
   Param,
   Delete,
+<<<<<<< Updated upstream
+=======
+  UseGuards,
+  Put,
+>>>>>>> Stashed changes
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {
+<<<<<<< Updated upstream
   ApiBody,
   ApiCreatedResponse,
   ApiOperation,
@@ -18,10 +21,23 @@ import {
 } from '@nestjs/swagger';
 
 @ApiTags('User')
+=======
+  ApiBearerAuth,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { FetchAllUserDto } from './dto/fetch-all-user.dto';
+import { Public } from 'src/common/public.decorator';
+
+@ApiTags('User')
+@Public()
+@ApiBearerAuth('access-token')
+>>>>>>> Stashed changes
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+<<<<<<< Updated upstream
   @ApiBody({ type: CreateUserDto })
   @ApiOperation({ summary: 'Create a new user' })
   @ApiCreatedResponse({
@@ -35,6 +51,10 @@ export class UsersController {
 
   @Get()
   findAll() {
+=======
+  @Get("/all")
+  findAll() : Promise<FetchAllUserDto[]>{
+>>>>>>> Stashed changes
     return this.usersService.findAll();
   }
 
@@ -43,13 +63,19 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Get('/whoami')
+  findCurrentLoggedInUser(): {email: string, userId: string} | any{
+    console.log('Current user');
+    return {userId: '123', email: ''}
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<void> {
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }

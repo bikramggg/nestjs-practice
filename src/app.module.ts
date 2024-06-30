@@ -12,6 +12,27 @@ import { UsersRepository } from './repository/users.repository';
       isGlobal: true, // Make the config module global
     }),
     DatabaseModule,
+<<<<<<< Updated upstream
+=======
+    AuthModule,
+    UsersModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '7d' },
+      }),
+      inject: [ConfigService],
+    }),
+  ],
+  controllers: [UsersController, AuthController],
+  providers: [AuthService, UsersService, UsersRepository, 
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+>>>>>>> Stashed changes
   ],
   controllers: [AppController, UsersController],
   providers: [AppService, UsersService, UsersRepository],

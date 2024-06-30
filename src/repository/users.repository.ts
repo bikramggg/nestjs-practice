@@ -17,11 +17,22 @@ export class UsersRepository {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+    return this.userModel.find({}).exec();
   }
 
+<<<<<<< Updated upstream
   async findOne(id: string): Promise<User> {
     return this.userModel.findById(id).exec();
+=======
+  async findOne(_id: string): Promise<User> {
+    return this.userModel.findOne({ _id }).exec();
+  }
+
+  async findOneByEmail(email: string): Promise<User> {
+    return this.userModel.findOne({
+      email,
+    }).exec();
+>>>>>>> Stashed changes
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
