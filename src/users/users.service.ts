@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { UsersRepository } from 'src/repository/users.repository';
 import { InjectModel } from '@nestjs/mongoose';
@@ -22,22 +21,24 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.userRepo.findAll();
   }
 
-  findOne(email: string): Promise<User> {
-    return this.userRepo.findOne(email);
+  findOne(id: string): Promise<User> {
+    return this.userRepo.findOne(id);
   }
 
   findOneByEmail(email: string): Promise<UserDocument & User> {
     return this.userModel.findOne({email: email});
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    await this.userModel.updateOne({_id: id}, {
+        ...updateUserDto
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    return await this.userModel.deleteOne({_id: id});
   }
 }

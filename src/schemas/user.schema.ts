@@ -5,11 +5,32 @@ import * as validator from 'validator';
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema()
+enum status {
+  Active = "ACTIVATED", //or User = "user",
+  Deactive = "DEACTIVATED" , // or Admin = "admin",
+}
+
+@Schema({
+  versionKey: false,
+  timestamps: true,
+  toJSON: {
+    transform: (doc, ret) => {
+      delete ret.password;
+      return ret;
+    },
+  },
+  toObject: {
+    transform: (doc, ret) => {
+      delete ret.password;
+      return ret;
+    },
+  },
+})
 export class User {
   
   @Prop({type: mongoose.Schema.Types.ObjectId, auto: true})
   _id: string;
+
   @Prop({ required: true, minlength: 3 })
   name: string;
 
@@ -37,6 +58,15 @@ export class User {
 
   @Prop({ required: false })
   phone?: number;
+
+  @Prop({ required: false })
+  address?: string;
+
+  @Prop({ required: false })
+  role?: string;
+
+  @Prop({ required: false })
+  status?: status ;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

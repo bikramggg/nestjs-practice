@@ -5,12 +5,12 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "plugins": [
-    {
-      "name": "@nestjs/swagger",
-      "options": {
-        "introspectComments": true
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "introspectComments": true
+        }
       }
-    }
-  ]
+    ]
   }
 }

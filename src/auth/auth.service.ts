@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   async signUp(signUpDto: CreateUserDto): Promise<any> {
-    const userExists = await this.userRepo.findOne(signUpDto.email);
+    const userExists = await this.userRepo.findOneByEmail(signUpDto.email);
     if (userExists) {
       throw new HttpException('User already exists', 400);
     }

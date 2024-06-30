@@ -1,45 +1,32 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {
   ApiBearerAuth,
-  ApiBody,
-  ApiCreatedResponse,
-  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { FetchAllUserDto } from './dto/fetch-all-user.dto';
+import { Public } from 'src/common/public.decorator';
 
 @ApiTags('User')
+@Public()
 @ApiBearerAuth('access-token')
 @Controller('user')
 @UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiBody({ type: CreateUserDto })
-  @ApiOperation({ summary: 'Create a new user' })
-  @ApiCreatedResponse({
-    status: 201,
-    description: 'The user has been created.',
-  })
-  @Post('/c')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
-  @Get()
-  findAll() {
+  @Get("/all")
+  findAll() : Promise<FetchAllUserDto[]>{
     return this.usersService.findAll();
   }
 
@@ -48,13 +35,19 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Get('/whoami')
+  findCurrentLoggedInUser(): {email: string, userId: string} | any{
+    console.log('Current user');
+    return {userId: '123', email: ''}
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<void> {
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }
